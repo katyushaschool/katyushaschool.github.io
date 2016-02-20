@@ -1,0 +1,64 @@
+<meta charset="utf-8">
+<pre id=board></pre>
+<pre id=log></pre>
+<script>
+function write(text, color){
+  log.innerHTML += text + "<br>"
+}
+write("Вы видите дракона")
+write("Вы видите озеро")
+write("Вы видите лягушку")
+// log.innerHTML += "Вы видите дракона<br>"
+// log.innerHTML += "Вы видите дракона<br>"
+
+map="▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼"
+
+hero = {x: 0, symbol: "@"}
+object = {x: 5, symbol: "D", name: "Дракон", alive: true}
+
+function draw() {
+arr = map.split("")
+arr[hero.x]="ツ"
+if (object.alive){
+  arr[object.x] = object.symbol
+}
+board.innerHTML = arr.join("")
+}
+
+move = function(newx) {
+if (object.x === newx && object.alive === true){
+object.alive = false
+write(object.name + " побежден")
+}
+
+hero.x= newx
+}
+
+ right = function() {
+  if (hero.x < map.length - 1) {
+      move(hero.x + 1)
+   }
+}
+
+left = function() {
+  if (hero.x > 0) {
+ move(hero.x-1)
+    }
+ }
+
+document.onkeydown = function (e) {
+  turn(e.keyCode)
+  draw()
+}
+
+function turn (key) {
+  if (key === 39) {
+    right()
+  }
+
+  if (key === 37) {
+    left()
+   }
+}
+draw()
+</script>

@@ -1,0 +1,59 @@
+
+
+<pre id=board></pre>
+<script>
+  area= ["..........",
+         "..........",
+         "..........",
+         "..........",
+         "..........",
+         ".........."]
+  hero= {x:0 ,y:1,  symbol: "@",hp:20}
+  object = {x:5, y:3, symbol: "D" ,hp:20,
+alive:true }
+
+
+
+
+draw=function(){
+  arr=area.map(i=>i.split(""))
+
+    arr[hero.y] [hero.x]=hero.symbol
+    if(object.alive===true)
+    arr[object.y][object.x]=object.symbol
+  board.innerHTML=arr.map(i=>i.join("")).join("<br>")
+}
+
+document.onkeydown = function (event) {
+  key=event.keyCode
+
+  if(key==39)
+    if(hero.x<area[hero.y].length-1)
+      hero.x=hero.x+1
+
+  if(key==37)
+    if(hero.x>0)
+      hero.x=hero.x-1
+
+  if(key==38)
+    if(hero.x>0)
+    hero.y=hero.y-1
+
+  if(key==40)
+    if(hero.x>0)
+    hero.y=hero.y+1
+
+
+
+  draw()
+}
+draw()
+// 38 - вверх
+// 40 - вниз
+// 37 - влево
+// 39 - вправо
+
+
+
+
+</script>

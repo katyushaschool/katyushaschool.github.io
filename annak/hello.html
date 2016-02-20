@@ -1,0 +1,124 @@
+<pre id=peny></pre>
+<pre id=log></pre>
+<script>
+area = ["..........",
+       "..........",
+       "..........",
+       "..........",
+       "..........",
+       "..........",
+       "..........",
+       "..........",
+       "..........",
+       ".........."]
+hero = {x:0, y : 3, symbol: "@",hp:5, damage:8, alive: true}
+objects = [
+  {x:5,y:2, symbol: "D", alive : true,hp:20, damage:4},
+  {x:2,y:5, symbol: "Z", alive : true,hp:20, damage:3},
+  {x:8,y:1, symbol: "G", alive : true,hp:20, damage:2}
+]
+  makeEnemy = function (){
+    return{
+      x : Math.round (Math.random()*9),
+      y : Math.round (Math.random()*9),
+      hp : Math.round (Math.random()*9),
+      damage : Math.round (Math.random()*9),
+      symbol: "G", alive : true
+}
+  }
+  objects.push(makeEnemy())
+  objects.push(makeEnemy())
+  objects.push(makeEnemy())
+  objects.push(makeEnemy())
+  objects.push(makeEnemy())
+  objects.push(makeEnemy())
+  objects.push(makeEnemy())
+
+move = function(newx,newy) {
+  if (hero.alive === true) {
+    var canMove = true
+    var collision = function(item) {
+     if (item.x === newx && item.y === newy && item.alive){
+        item.hp = item.hp - hero.damage
+        if (item.hp <= 0)
+          item.alive = false
+        else {
+          hero.hp = hero.hp - item.damage
+          if (hero.hp <= 0)
+            hero.alive = false
+        }
+        canMove = false
+      }
+    }
+
+    objects.forEach(collision)
+
+    if(canMove) hero.x = newx
+    if(canMove) hero.y = newy
+  }
+}
+
+
+draw = function() {
+   arr = area.map(i=>i.split(''))
+   if (hero.alive === true)
+     arr [hero.y][hero.x]=hero.symbol
+
+   objects.forEach(function(object){
+     if (object.alive === true)
+       arr [object.y][object.x]=object.symbol
+   })
+  peny.innerHTML = arr.map(i=>i.join("")).join("<br>")
+}
+
+write = function (string){
+log.innerHTML += string+ "<br>"
+}
+
+right = function () {
+if (hero.x< area[hero.y].length - 1) {
+  move(hero.x+1, hero.y)
+}
+
+}
+left = function () {
+  if (hero.x>0) {
+      move( hero.x-1, hero.y)
+      }
+
+}
+down = function () {
+if (hero.y< area.length - 1) {
+  move(hero.x, hero.y+1)
+}
+
+}
+up = function () {
+
+  if (hero.y>0) {
+      move(hero.x, hero.y- 1)
+      }
+
+}
+
+document.onkeydown = function (event) {
+  key = event.keyCode
+
+  if (key === 37)
+    left ()
+
+  if  (key === 39)
+    right ()
+
+  if (key === 38)
+  up ()
+
+  if (key === 40)
+  down()
+
+  draw()
+}
+
+
+draw()
+</script>

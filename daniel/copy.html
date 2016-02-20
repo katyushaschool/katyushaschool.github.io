@@ -1,0 +1,62 @@
+<meta charset="utf-8">
+<pre id=board></pre>
+<script>
+
+hero={x:0,symbol:"@", hp:20, damage: 10, alive: true}
+object={x:5,symbol:"D", hp:20, damage: 5, alive: true}
+
+
+
+map="........"
+
+move = function (newx){
+  canMove = true
+
+  if (object.x === newx){
+
+    if(object.alive) {
+      object.hp = object.hp - hero.damage
+      if(object.hp > 0)
+        hero.hp = hero.hp - object.damage
+    }
+
+    if (hero.hp <= 0) hero.alive = false
+    if (object.hp <= 0) object.alive = false
+    if(object.alive) canMove = false
+  }
+
+  if(canMove) hero.x = newx
+}
+
+draw=function() {
+ arr=map.split("")
+
+  arr[hero.x]=hero.symbol
+if(object.alive === true)
+
+  arr[object.x]=object.symbol
+
+board.innerHTML = arr.join(" ")
+}
+
+
+document.onkeydown = function (event) {
+  key = (event.keyCode)
+   if (key==39)
+    if (hero.x<map.length-1) move(hero.x+1)
+
+    if (key==37)
+     if (hero.x>0) move(hero.x-1)
+
+    draw ()
+
+
+}
+
+
+
+//logElement.innerHTML += "hello world"
+  // b = "__D~".split("")
+    // b [1]="@"
+  // board.innerHTML = b.join(" ")
+</script>

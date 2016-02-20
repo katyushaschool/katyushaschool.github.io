@@ -1,0 +1,38 @@
+<pre id=board>
+</pre>
+<script>
+area = [
+"........",
+"........",
+"........",
+"........",
+"........"
+]
+hero = {x: 0,y:0,symbol: "@", color: "#332178"}
+token = [
+  {x: 3,y:1,symbol: "0", color: "#dddd00"},
+  {x: 2,y:4,symbol: "0", color: "#aaaa00"},
+  {x: 2,y:0,symbol: "0", color: "#ccdc00"}
+]
+put = function (arr, item) {
+
+arr[item.y][item.x] = `<span style="color:${item.color}">${item.symbol}</span>`
+
+
+}
+draw = function () {
+  arr = area.map(i=>i.split(""))
+token.map (i=>put(arr,i))
+ put (arr,hero)
+
+  board.innerHTML = arr.map(i=>i.join("")).join("<br>")
+
+
+
+
+
+}
+
+draw ()
+//arr[hero.x]
+</script>

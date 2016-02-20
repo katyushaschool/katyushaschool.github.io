@@ -1,0 +1,53 @@
+<pre id=board></pre>
+<script>
+map = '............'
+
+hero = {x: 0, symbol: "@"}
+object = {x: 5, name:"Дракон", symbol: "D", alive: true}
+
+draw = function(){
+  arr = map.split("")
+
+  arr[hero.x] = "@"
+  if (object.alive)
+    arr[object.x] = object.symbol
+
+  board.innerHTML = arr.join("")
+}
+
+move = function(newx){
+  if (object.x === newx){
+    object.alive = false
+    write(object.name + " побеждён")
+  }
+
+
+  hero.x = newx
+}
+
+right = function(){
+  if (hero.x < map.length - 1) {
+    move(hero.x + 1)
+  }
+}
+
+left = function(){
+  if (hero.x > 0) {
+    move(hero.x - 1)
+  }
+}
+
+document.onkeydown = function (event) {
+  key = event.keyCode
+
+  if (key === 37) {
+    left()
+  }
+
+  if (key === 39) {
+    right()
+  }
+  draw()
+}
+draw()
+</script>

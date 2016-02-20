@@ -1,0 +1,87 @@
+<meta charset="utf-8">
+<pre id=board></pre>
+<pre id = stats>65 </pre>
+<script>
+hero= {x:0,y:0, symbol: "@",hp:20,damage:7}
+
+map=[
+"..........",
+"..........",
+".........."]
+objects=[
+  {x:2,y:2,symbol:"J",alive:true,hp:20,damage:7},
+  {x:3,y:0,symbol:"H",alive:true,hp:20,damage:7},
+  {x:4,y:2,symbol:"D",alive:true,hp:20,damage:7},
+  {x:5,y:1,symbol:"L",alive:true,hp:20,damage:7},
+]
+
+function singleStat (item){
+return "здоровье:" + item.hp
+}
+
+function drawStats (){
+  stats.innerHTML=singleStat(hero)
+//stats.innerHTML+="new"
+
+
+
+}
+
+function draw(){
+  drawStats ()
+
+arr=map.map((i)=>i.split(""))
+
+arr[hero.y][hero.x]=hero.symbol
+     objects.map(object=>{
+ if(object.alive)
+  arr[object.y][object.x]=object.symbol
+})
+
+board.innerHTML=arr.map((i)=>i.join("")).join("<br>")
+}
+
+move=function(newx,newy){
+objects.map(object=>{
+
+  if (newx===object.x && newy===object.y)
+  object.alive=false
+})
+  hero.x = newx
+  hero.y= newy
+
+}
+
+left=function() {
+  if(hero.x>0)
+    move(hero.x-1, hero.y)
+}
+
+right= function () {
+  if (hero.x<map[hero.y].length-1)
+    move(hero.x+1,hero.y)
+}
+up=function() {
+  if(hero.y>0)
+    move(hero.x,hero.y-1)
+}
+
+down= function () {
+  if (hero.y<map.length-1)
+    move(hero.x,hero.y+1)
+}
+document.onkeydown = function (event) {
+  key=event.keyCode
+  if(key===37) left()
+  if(key===39) right()
+  if(key===38) up()
+  if(key===40) down()
+  draw()
+}
+
+// 38 - вверх
+// 40 - вниз
+// 37 - туда
+// 39 - сюда
+draw()
+</script>

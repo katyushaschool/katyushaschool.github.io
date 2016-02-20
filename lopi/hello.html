@@ -1,0 +1,136 @@
+<meta charset="utf-8">
+
+<pre id=board></pre>
+
+<pre id=stats></pre>
+
+<script>
+hero={x:0 , y:0 , symbol:"^_^" , hp:100 , damage:10}
+
+objects=[{x:5  , y:2 , symbol:"♪", alive:true , hp:20 , damage:7},
+         {x:20 , y:10, symbol:"♫", alive:true , hp:100 , damage:9}
+]
+
+
+
+//,,,,,,,,,***,,,,,,,,,,,,,;;;;,,,,,,,,,,,,,,,,,,,,,,,,,,Go,,,,,,,,,,,,,,,,,,,,,pr,,,,FINAL"
+map=["...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+     "...................................................." ,
+
+]
+
+
+function singlestat(item){
+
+return "helth" + item.hp
+  //return " hero: ^_^  , HP: 98 , straight: 10"
+
+}
+
+
+function drawStats(){
+
+stats.innerHTML=singlestat(hero)
+
+
+
+
+// stats.innerHTML+= "hero: ^_^  , HP: 100 , straight: 10"
+// stats.innerHTML+= "hero: ^_^  , HP: 98 , straight: 10"
+
+
+
+
+
+}
+
+
+
+
+
+
+function draw(){
+
+drawStats()
+
+
+
+arr=map.map((i)=>i.split(""))
+
+arr[hero.y][hero.x]=hero.symbol
+
+objects.map(object=>{
+  if(object.alive)
+    arr[object.y][object.x]=object.symbol
+})
+
+
+
+
+board.innerHTML=arr.map((i)=>i.join("")).join("<br>")
+
+
+}
+
+move=function(newx,newy){
+
+  objects.map(object=>{
+ if(hero.x ===object.x && hero.y=== object.y)
+ object.alive=false
+ })
+
+hero.y = newy
+hero.x = newx
+}
+
+left = function() {
+  if (hero.x>0)
+    move(hero.x - 1 , hero.y)
+}
+right = function() {
+  if (hero.x<map[hero.y].length -1)
+    move(hero.x + 1 , hero.y)
+}
+up = function() {
+    if (hero.y>0)
+    move(hero.x ,  hero.y - 1)
+}
+
+down = function() {
+  if (hero.y<map.length-1)
+    move(hero.x, hero.y + 1 )
+}
+
+
+
+
+document.onkeydown = function (e) {
+  key = e.keyCode
+
+  if (key === 39) right()
+  if (key === 37) left()
+  if (key === 40) down()
+  if (key === 38) up()
+  draw()
+
+}
+draw()
+
+</script>

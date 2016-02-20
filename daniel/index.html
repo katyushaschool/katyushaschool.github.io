@@ -1,0 +1,80 @@
+<meta charset="utf-8">
+<pre id=board></pre>
+<script>
+
+hero={x:0,y:0,symbol:"@",hp:20,damage: 10,alive: true}
+object={x:5,symbol:"D",hp:20,damage:5 ,alive: true}
+
+
+
+area=["0123","1234","abcd"]
+
+
+
+
+
+move=function(newx,newy) {
+  canMove = true
+if (object.x === newx && object.y === newy) {
+ if(object.alive) {
+  object.hp=object.hp-hero.damage
+   if(object.hp>0)
+    hero.hp=hero.hp-object.damage
+  else
+   object.alive=false
+ }
+ if (object.alive) canMove = false
+}
+ if (hero.hp <=0) hero.alive=false
+
+ if (canMove) hero.x=newx
+  if (canMove) hero.x=newy
+}
+
+draw=function() {
+arr=area.map(i=>i.split(""))
+arr[1][2]="Z"
+//area.split("")
+//arr.join("")
+
+
+//
+// if (hero.alive===true)
+//
+arr[hero.y][hero.x]=hero.symbol
+
+// if(object.alive === true)
+//
+//   arr[object.x]=object.symbol
+
+board.innerHTML = arr.map(i=>i.join("")).join("<br>")
+}
+
+
+
+document.onkeydown = function (event) {
+  key = (event.keyCode)
+   if (key==39)
+    if (hero.x<area[hero.y].length-1) if (hero.alive===true) move(hero.x+1, hero.y)
+
+    if (key==37)
+     if (hero.x>0) if (hero.alive===true)  move(hero.x-1, hero.y)
+
+  //    if (key==38)
+    //if (hero.y<area[hero.x].length-1) if (hero.alive===true) move(hero.y+1)
+
+          if (key==40)
+ if (hero.alive===true)  move(hero.x, hero.y-1)
+
+    draw ()
+
+
+}
+
+
+
+//logElement.innerHTML += "hello world"
+  // b = "__D~".split("")
+    // b [1]="@"
+  // board.innerHTML = b.join(" ")
+</script>

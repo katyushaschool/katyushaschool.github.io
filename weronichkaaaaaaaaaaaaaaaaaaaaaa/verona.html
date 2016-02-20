@@ -1,0 +1,95 @@
+<meta charset=utf8>
+<pre id=board></pre>
+<pre id=stats> !!$$ </pre>
+
+
+
+<script>
+hero = {x:0, y:0, symbol:"@", hp:20, damage:7}
+  objects = [
+  {x:5, y:5, symbol:"D", alive:true ,hp:20, damage:7 },
+  {x:6, y:2, symbol:"s", alive:true ,hp:20, damage:7 },
+  {x:2, y:0, symbol:"f", alive:true ,hp:20, damage:7 },
+  {x:9, y:4, symbol:"h", alive:true ,hp:20, damage:7 },
+]
+  map = ["...............",
+         "...............",
+         "...............",
+         "...............",
+         "...............",
+         "..............."]
+
+ function singleStat(item){
+   return" здоровье : " + item.hp
+ }
+
+  function drawStats(){
+    stats.innerHTML = singleStat(hero)
+    // stats.innerHTML += "new"
+    // stats.innerHTML += "new"
+    // stats.innerHTML += "new"
+  }
+
+  function draw(){
+
+arr=map.map((i)=> i.split(""))
+ arr[hero.y][hero.x] = hero.symbol
+
+  objects.map(object => {
+
+if(object.alive)
+   arr[object.y][object.x]=object.symbol
+})
+
+board.innerHTML = arr.map((i)=>i.join("")).join("<br>")
+
+drawStats()
+
+}
+
+
+move = function(newx, newy){
+
+  objects.map(object => {
+  if(newx === object.x && newy === object.y){
+      //object.alive = false
+object.y = Math.round(Math.random() * (map.length-1))
+object.x = Math.round(Math.random() * (map[object.y].length-1))
+
+  }
+})
+         hero.x = newx
+         hero.y = newy
+       }
+
+left = function(){
+  if(hero.x > 0)
+    move( hero.x -1 , hero.y )
+}
+
+right = function(){
+  if(hero.x < map[hero.y].length - 1)
+    move( hero.x +1 , hero.y )
+}
+up = function(){
+  if(hero.y > 0)
+    move( hero.x , hero.y -1 )
+}
+
+down = function(){
+  if(hero.y < map.length - 1)
+    move( hero.x , hero.y +1 )
+}
+document.onkeydown = function (e){
+    key = e.keyCode
+
+    if(key === 37) left()
+    if(key === 39) right()
+    if(key === 38) up()
+    if(key === 40) down()
+ draw()
+  }
+
+draw()
+
+</script>

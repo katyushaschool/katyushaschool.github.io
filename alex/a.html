@@ -1,0 +1,21 @@
+<pre id=board>
+</pre>
+
+<script>
+draw = function (x) {
+map="..............."
+a=map.split("")
+a[x]=("H")
+map=a.join("")
+board.innerHTML = map
+}
+document.onkeydown = function (event) {
+  key = event.keyCode
+}
+
+//38 - вверх
+//40 - вниз
+//37 - туда
+//39 - сюда
+
+</script>

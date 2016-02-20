@@ -1,0 +1,70 @@
+<pre id=board></pre>
+<script>
+area = [
+  '...............',
+  '..............',
+  '..............',
+  '..............',
+  '..............',
+  '..............'
+]
+hero = {x: 0, symbol: "@"}
+objects = [
+  {x: 3, symbol: "D", alive: true, hp:100, damage:20,},
+  {x: 6, symbol: "Z", alive: true, hp:10, damage:5,},
+  {x: 8, symbol: "G", alive: true, hp:15, damage:10,}
+]
+
+move = function(newx){
+  objects.forEach(function(object){
+    if (newx === object.x)
+      object.alive = false
+    }
+  )
+canMove = true
+collision=function(item){
+  if(item.x === newx && item.alive)
+canMove=false
+}
+objects.forEach(collision)
+if(canMove) hero.x = newx
+
+}
+
+draw = function(){
+  arr = area.split("")
+  arr[hero.x] = hero.symbol
+  objects.forEach(function(object){
+    if (object.alive === true)
+      arr[object.x] = object.symbol
+    })
+
+  board.innerHTML = arr.join("")
+}
+
+right = function(){
+  if (hero.x < area.length - 1) {
+    move(hero.x + 1)
+  }
+}
+
+left = function(){
+  if (hero.x > 0) {
+    move(hero.x - 1)
+  }
+}
+
+document.onkeydown = function (event) {
+  key = event.keyCode
+
+  if (key === 37) {
+    left()
+  }
+
+  if (key === 39) {
+    right()
+  }
+  draw()
+}
+draw()
+</script>

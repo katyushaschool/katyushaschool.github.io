@@ -1,0 +1,49 @@
+<meta charset="utf-8">
+
+<pre id=board></pre>
+
+<script>
+//logElement.innerHTML = "N"
+hero= {y:1, x:0, symbol:"N", hp:20, damege: 20}
+object={y:2, x:5,symbol:"D",hp:20, damege: 10, alive:true}
+area=["....","....","...."]
+
+move= function (newx) {
+canMove= true
+if (object.x ===newx){
+if(object.alive) {
+  object.hp= object.hp - hero.damage
+if(object.hp>0)
+ hero.hp= hero.hp-object.damege
+}
+
+if(hero.hp<= 0) hero.alive= false
+if(object.hp<= 0) object.alive= false
+if(object.alive) canMove = false
+
+ }
+
+if (canMove) hero.x= newx
+}
+
+draw=function(){
+arr=area.map(i=>i.split(""))
+ arr[hero.y][hero.x]=hero.symbol
+ if(object.alive ===true)
+ arr[object.y][object.x]=object.symbol
+board.innerHTML=arr.map(i=>i.join("")).join("<br>")
+}
+
+
+document.onkeydown=function(event){
+  key=event.keyCode
+  if (key==39)
+if(hero.x<7)
+move(hero.x+1)
+ if(key==37)
+ if(hero.x>0)
+ move(hero.x-1)
+  draw()
+}
+draw()
+</script>

@@ -1,0 +1,194 @@
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+pre {width: 100%; font-size: 4.5vw;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+body{cursor: pointer;}
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+#fill{height: 100%; padding: 20px 0px 20px 2vw}
+</style>
+<body>
+<div id=fill>
+<pre id=board></pre>
+<pre id=state></pre>
+</div>
+<script>
+hero = { x: 15, y: 3, sym: "@", show: true };
+things = [];
+colors = ["blue", "LightGreen", "blue", "MediumSlateBlue", "MediumBlue", "Lime", "BlueViolet", "DarkMagenta", "LightGreen", "BlueViolet"];
+rand = function (max) {
+  return Math.round(Math.random() * max);
+};
+randColor = function () {
+  return colors[rand(colors.length - 1)];
+};
+makeEnemy = function () {
+  return {
+    x: rand(34),
+    y: rand(7),
+    sym: "*",
+    color: randColor(),
+    show: true
+  };
+};
+n = 1698;
+while (n--) {
+  things.push(makeEnemy());
+}
+
+put = function (thing) {
+  if (thing.show === true) arr[thing.y][thing.x] = "<span style=\"color:" + thing.color + "\">" + thing.sym + "</span>";
+};
+area = ["...................................", "...................................", "...................................", "...................................", "...................................", "...................................", "...................................", "..................................."];
+draw = function () {
+  arr = area.map(function (i) {
+    return i.split("");
+  });
+  things.forEach(function (thing) {
+    return put(thing);
+  });
+  put(hero);
+  board.innerHTML = arr.map(function (i) {
+    return i.join("");
+  }).join("<br>");
+};
+move = function (newx, newy) {
+  things.map(function (i) {
+    if (i.x === newx && i.y === newy) i.show = false;
+  });
+  hero.x = newx;
+  hero.y = newy;
+};
+right = function () {
+  if (hero.x < area[hero.y].length - 1) move(hero.x + 1, hero.y);
+  draw();
+};
+
+left = function () {
+  if (hero.x > 0) move(hero.x - 1, hero.y);
+  draw();
+};
+
+down = function () {
+  if (hero.y < area.length - 1) move(hero.x, hero.y + 1);
+  draw();
+};
+
+up = function () {
+  if (hero.y > 0) move(hero.x, hero.y - 1);
+  draw();
+};
+document.onkeydown = function (event) {
+  if (event.keyCode === 39) right();
+  if (event.keyCode === 37) left();
+  if (event.keyCode === 38) up();
+  if (event.keyCode === 40) down();
+};
+
+// 38 - вверх
+// 40 - вниз
+// 37 - туда
+// 39 - сюда
+
+draw();
+
+movement = false
+
+window.ondevicemotion = function(event) {
+  var rotation = event.rotationRate
+  if (rotation != null) {
+    var arAlpha = rotation.alpha
+    var arBeta = rotation.beta
+    var arGamma = rotation.gamma
+  }
+  var treshhold = 100
+  var delay = 750
+  if(movement === false){
+    if (window.orientation === 0) {
+      if(arAlpha < -treshhold) {up(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arAlpha > treshhold) {down(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arBeta > treshhold) {right(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arBeta < -treshhold) {left(); movement = true; setTimeout(function(){movement = false}, delay);}
+    } else if (window.orientation === 90) {
+      if(arBeta > treshhold) {up(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arBeta < -treshhold) {down(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arAlpha > treshhold) {right(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arAlpha < -treshhold) {left(); movement = true; setTimeout(function(){movement = false}, delay);}
+    } else if (window.orientation === -90) {
+      if(arBeta < -treshhold) {up(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arBeta > treshhold) {down(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arAlpha < -treshhold) {right(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arAlpha > treshhold) {left(); movement = true; setTimeout(function(){movement = false}, delay);}
+    } else if (window.orientation === 180) {
+      if(arAlpha > treshhold) {up(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arAlpha < -treshhold) {down(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arBeta < -treshhold) {right(); movement = true; setTimeout(function(){movement = false}, delay);}
+      if(arBeta > treshhold) {left(); movement = true; setTimeout(function(){movement = false}, delay);}
+    }
+  }
+}
+window.onload = function() {
+  wastouchmove = false
+// document.addEventListener("click", function( event ) {
+//   state.innerHTML = event.screenX
+//   state.innerHTML += ":"
+//   state.innerHTML += event.screenY
+//   }, false);
+  document.addEventListener("touchend", function( event ) {
+    var width, height;
+    if (wastouchmove) {
+      wastouchmove = false
+    } else {
+      // state.innerHTML = event.changedTouches[0].pageX
+      // state.innerHTML += "("
+      // state.innerHTML += screen.width
+      // state.innerHTML += ")"
+      // state.innerHTML += ":"
+      // state.innerHTML += event.changedTouches[0].pageY
+      // state.innerHTML += "("
+      // state.innerHTML += screen.height
+      // state.innerHTML += ")"
+      if (window.orientation === 0) {
+        width = screen.width
+        height = screen.height
+      } else if (window.orientation === 90) {
+        width = screen.height
+        height = screen.width
+      } else if (window.orientation === -90) {
+        width = screen.height
+        height = screen.width
+      } else if (window.orientation === 180) {
+        width = screen.width
+        height = screen.height
+      }
+
+      if (event.changedTouches[0].pageX < width * 0.33) left()
+      if (event.changedTouches[0].pageX > width * 0.66) right()
+      if (event.changedTouches[0].pageY < height * 0.33) up()
+
+      if (window.orientation === 0 || window.orientation === 180) {
+        if (event.changedTouches[0].pageY > height * 0.44) down()
+      } else {
+        if (event.changedTouches[0].pageY > height * 0.66) down()
+      }
+    }
+  }, false);
+
+
+  document.addEventListener("touchmove", function( event ) {
+    wastouchmove = true
+  }, false);
+
+}
+</script>
+</body>

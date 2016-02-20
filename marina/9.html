@@ -1,0 +1,163 @@
+<pre id=board></pre>
+<pre id=log></pre>
+<pre id=state></pre>
+<script>
+map = [
+".........." ,
+".........." ,
+".........." ,
+".........." ,
+".........." ,
+".........." ,
+".........." ,
+".........." ,
+".........." ,
+".........."
+]
+
+hero= {y:0 , x:0 , symbol: "@",
+hp:20,
+damage:5}
+objects = [
+   {y:2 , x:3 , symbol: "D" ,alive: true,
+ hp:10,
+damage:3
+},
+   {y:1 , x:5 , symbol: "Z" ,alive: true,
+ hp:15,
+damage:4
+},
+   {y:4 , x:7 , symbol: "G" ,alive: true,
+   hp:17,
+   damage:5
+ } ,
+  {y:3 , x: 3 , symbol: "*" , alive: true ,
+ heal: 10}
+]
+makeEnemy = function(){
+  return{
+    x: Math.round (Math.random() *9),
+    y: Math.round (Math.random() *9),
+    hp: Math.round (Math.random() *9),
+    damage: Math.round (Math.random() *9),
+    symbol: "Z" ,alive: true
+}
+}
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+  objects.push (makeEnemy())
+
+drawState = function (){
+  display=i=>{
+    if(i.hp) return `${i.symbol} hp: ${i.hp} damage: ${i.damage}<br>`
+    else return ("")}
+  state.innerHTML = display(hero) +
+  objects.map(i=>display(i)).join("")
+}
+
+interact = function (item) {
+  if (item.hp){
+    item.hp = item.hp - hero.damage
+    if (item.hp <= 0)
+      item.alive = false
+
+    if (item.alive === true){
+      hero.hp = hero.hp - item.damage
+    }
+  } else {
+  item.alive = false
+   hero.hp = hero.hp + item.heal
+  }
+  if (item.alive === true)
+    return false
+  else
+    return true
+}
+write = function (string) {
+  log.innerHTML += string + "<br>"
+}
+move = function(newx , newy){
+  var canMove=true
+  collision = function (item) {
+    if(item.x === newx && item.y === newy && item.alive)
+    canMove = interact(item)
+  }
+  objects.forEach (collision)
+  if(canMove) {
+    hero.x = newx
+    hero.y = newy
+  }
+}
+
+draw=function(){
+ arr=map.map(i => i.split(""))
+if (hero.hp >= 0)
+  arr[hero.y][hero.x]=hero.symbol
+
+objects.forEach(function(object){
+
+  if(object.alive === true)
+    arr[object.y][object.x]=object.symbol
+  })
+  board.innerHTML = arr.map(i => i.join("")).join("<br>")
+drawState()
+}
+left=function(){
+  if (hero.x>0) {
+    move(hero.x-1 , hero.y)
+    draw()
+  }
+}
+right=function(){
+ if (hero.x<map[hero.y].length-1) {
+   move(hero.x+1 , hero.y)
+ }
+
+draw()
+}
+up=function(){
+  if (hero.y>0) {
+    move(hero.x , hero.y-1)
+    draw()
+  }
+}
+down=function(){
+ if (hero.y<map.length-1) {
+   move(hero.x , hero.y+1)
+ }
+
+draw()
+}
+
+document.onkeydown = function (event) {
+  if (hero.hp >= 0){
+  key = event.keyCode
+
+  if (key === 37)
+    left()
+
+  if (key === 39)
+  right()
+
+  if (key === 38)
+  up()
+
+ if (key === 40)
+ down()}
+}
+
+// 38 - вверх
+// 40 - вниз
+// 37 - туда
+// 39 - сюда
+
+draw()
+</script>
