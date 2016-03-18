@@ -1,7 +1,7 @@
 <meta charset="utf8">
 <pre id=board></pre>
 <script>
-hero={x:0,y:0,sym:"@", show:true}
+hero={x:0,y:0,sym:"@", show:true,bag: 0}
 things=[
 ]
 colors=[
@@ -25,16 +25,29 @@ return colors[rand(colors.length-1)]
 makeEnemy=function(){
 return {
   x: rand(34),
-  y: rand(7),
+  y: rand(9),
   sym: "*",
   color: randColor(),
   show:  true
   }
 }
-n=1698
+
+make=function(){
+n=1000
 while(n--){
-things.push(makeEnemy())
+ things.push(makeEnemy())
 }
+things.push({
+  x: rand(34),
+  y: rand(9),
+  sym: "Z",
+  color: "red",
+  show:  true
+})
+}
+
+make()
+
 
 
 put=function(thing){
@@ -49,17 +62,23 @@ area=[
   "...................................",
   "...................................",
   "...................................",
+  "...................................",
+  "...................................",
   "..................................."
 ]
 draw=function(){
 arr=area.map(i=>i.split(""))
   things.forEach(thing=>put(thing))
   put(hero)
-  board.innerHTML=arr.map(i=>i.join("")).join("<br>")
+  board.innerHTML=arr.map(i=>i.join("")).join("<br>")+"<br><br>вы собрали:"+hero.bag
 }
 move=function(newx,newy) {
 things.map(i=>{
-  if(i.x===newx&&i.y===newy)i.show=false
+  if(i.x===newx && i.y===newy && i.show != false){
+    i.show=false
+    hero.bag+=1
+    if (i.sym==="Z")make()
+  }
 })
 hero.x=newx
 hero.y=newy
