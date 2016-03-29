@@ -57,7 +57,7 @@ makeEnemy = function(){
 
 drawState = function (){
   display=i=>{
-    if(i.hp) return `${i.symbol} hp: ${i.hp} damage: ${i.damage}<br>`
+    if(i.hp>0) return `${i.symbol} hp: ${i.hp} damage: ${i.damage}<br>`
     else return ("")}
   state.innerHTML = display(hero) +
   objects.map(i=>display(i)).join("")
